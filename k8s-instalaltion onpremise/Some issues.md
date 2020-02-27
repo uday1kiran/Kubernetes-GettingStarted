@@ -5,3 +5,9 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | awk
 https://stackoverflow.com/questions/46664104/how-to-sign-in-kubernetes-dashboard
 
 https://www.thegeekdiary.com/how-to-access-kubernetes-dashboard-externally/
+
+dashboard install:
+https://www.edureka.co/blog/kubernetes-dashboard/
+https://github.com/kubernetes/dashboard/wiki
+https://stackoverflow.com/questions/39864385/how-to-access-expose-kubernetes-dashboard-service-outside-of-a-cluster
+https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
