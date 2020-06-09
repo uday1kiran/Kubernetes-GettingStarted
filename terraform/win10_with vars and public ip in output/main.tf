@@ -89,6 +89,17 @@ resource "azurerm_network_security_group" "myterraformnsg" {
         source_address_prefix      = "*"
         destination_address_prefix = "*"
     }
+    security_rule {
+        name                       = "WINRM"
+        priority                   = 1004
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "5986"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
 
     tags = {
         environment = "Terraform Demo"
@@ -171,15 +182,48 @@ resource "azurerm_virtual_machine" "myterraformvm2" {
 
     os_profile {
         computer_name  = var.computer_name
-        admin_username = "azureuser"
-        admin_password = "Notallowed1!"
+        admin_username = var.admin_username
+        admin_password = var.admin_password
   }
 
      os_profile_windows_config {
     #disable_password_authentication = false
   }
    
+   
 
+    provisioner "file" {
+    source      = "new.ps1"
+    destination = "C:\\new.ps1"
+
+    connection {
+      host = "${azurerm_network_interface.myterraformnic2.private_ip_address}"
+      timeout  = "3m"
+      type     = "winrm"
+      https    = true
+      port     = 5986
+      use_ntlm = true
+      insecure = true
+
+      #cacert = "${azurerm_key_vault_certificate.vm_cert.certificate_data}"
+      user     = var.admin_username
+      password = var.admin_password
+    }
+
+
+  }
+   provisioner "remote-exec" {
+       connection {
+           host = "${azurerm_network_interface.myterraformnic2.private_ip_address}"
+      type     = "winrm"
+      user     = "${var.admin_username}"
+      password = "${var.admin_password}"
+    }
+    inline = [
+      "powershell.exe -ExecutionPolicy Bypass -File C:\\new.ps1",
+    ]
+  }
+  
 
 
     tags = {
