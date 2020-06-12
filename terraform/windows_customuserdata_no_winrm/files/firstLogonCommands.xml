@@ -1,0 +1,27 @@
+<FirstLogonCommands>
+    <SynchronousCommand>
+        <CommandLine>cmd /c "mkdir C:\terraform"</CommandLine>
+        <Description>Create the Terraform working directory</Description>
+        <Order>11</Order>
+    </SynchronousCommand>
+    <SynchronousCommand>
+        <CommandLine>cmd /c "curl -o \terraform\winrm.ps1 https://raw.githubusercontent.com/uday1kiran/Kubernetes-GettingStarted/master/terraform/windows_terraformgroup/files/winrm.ps1"</CommandLine>
+        <Description>Move the CustomData file to the working directory</Description>
+        <Order>12</Order>
+    </SynchronousCommand>
+	<SynchronousCommand>
+        <CommandLine>cmd /c "curl -o \terraform\new.ps1 https://raw.githubusercontent.com/uday1kiran/Kubernetes-GettingStarted/master/terraform/windows_terraformgroup/files/new.ps1"</CommandLine>
+        <Description>Move the CustomData file to the working directory</Description>
+        <Order>13</Order>
+    </SynchronousCommand>
+    <SynchronousCommand>
+        <CommandLine>powershell.exe -sta -ExecutionPolicy Unrestricted -file C:\terraform\winrm.ps1</CommandLine>
+        <Description>Execute the WinRM enabling script</Description>
+        <Order>14</Order>
+    </SynchronousCommand>
+	<SynchronousCommand>
+        <CommandLine>powershell.exe -sta -ExecutionPolicy Unrestricted -file C:\terraform\new.ps1</CommandLine>
+        <Description>Installing Choco repository and other softwares from it</Description>
+        <Order>15</Order>
+    </SynchronousCommand>
+</FirstLogonCommands>
